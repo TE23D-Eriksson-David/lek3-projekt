@@ -5,7 +5,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         int Val = 0;
         boolean Klar = false;
-        int[] bussPlatser = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        int[] bussPlatser = { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         int[] pernsonumerPlatser = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         String[] NamnPlatser = { null, null, null, null, null, null, null, null, null, null, null, null, null, null,
                 null, null, null, null, null, null };
@@ -16,7 +16,7 @@ public class App {
             System.out.print("Ange: ");
             Scanner TB = new Scanner(System.in);
 
-            Val = VALMETOD(Klar,Val,TB,1,6);
+            Val = VALMETOD(Klar, Val, TB, 1, 6);
 
             switch (Val) {
                 case 1:
@@ -47,7 +47,7 @@ public class App {
     static void BokaPlats(int[] bussPlatser, int[] pernsonumerPlatser, String[] NamnPlatser, Boolean Klar, int Val,
             Scanner TB) {
         int AntalLedigaPlatser = 0;
-        for (int i : bussPlatser) {
+        for (int i = 0; i < bussPlatser.length; i++) {
             if (bussPlatser[i] == 0) {
                 AntalLedigaPlatser++;
             }
@@ -60,19 +60,81 @@ public class App {
             System.out.println("Vill du ha en fönsterplats?");
             System.out.println("1. Ja\n2. Nej");
 
-            Val = VALMETOD(Klar,Val,TB,1,2);
+            Val = VALMETOD(Klar, Val, TB, 1, 2);
 
             if (Val == 1) {
-                // Fixa fönster plats algoritm
-            } else {
+                
+                int x = 0;
+                int y = 0;
                 for (int i = 0; i < bussPlatser.length; i++) {
-                    if (bussPlatser[i] == 0) {
-                        // Fixa för iner platser
+                    x++;
+                    y++;
+                    if (x == 2) {
+                        System.out.print("|"+y+"| :X: ");
+                    }
+                    if (x == 1) {
+                        if (bussPlatser[i] == 0) {
+                            System.out.print("|"+y+"| :Ledig: ");
+                        } else {
+                            System.out.print("|"+y+"|   :X:   ");
+                        }
+                    }
+
+                    if (x == 4) {
+                        x = 0;
+                        if (bussPlatser[i] == 0) {
+                            System.out.println("|"+y+"| :Ledig: ");
+                        } else {
+                            System.out.println("|"+y+"|   :X:  ");
+                        }
+                    }
+
+                    if (x == 3)
+                        System.out.print("|"+y+"| :X:  ");
+                }
+
+
+
+
+
+            } else {
+                int x = 0;
+                int y = 0;
+                for (int i = 0; i < bussPlatser.length; i++) {
+                    x++;
+                    y++;
+                    if (x == 1) {
+                        System.out.print("|"+y+"| :X:   ");
+                    }
+                    if (x == 2) {
+                        if (bussPlatser[i] == 0) {
+                            System.out.print("|"+y+"| :Ledig: ");
+                        } else {
+                            System.out.print("|"+y+"|   :X:   ");
+                        }
+                    }
+
+                    if (x == 3) {
+                        if (bussPlatser[i] == 0) {
+                            System.out.print("|"+y+"|  :Ledig: ");
+                        } else {
+                            System.out.print("|"+y+"|    :X:   ");
+                        }
+                    }
+                    if (x == 4) {
+                        System.out.println("|"+y+"|  :X:   ");
+                        x = 0;
                     }
                 }
             }
 
         }
+
+            
+
+
+
+        System.exit(AntalLedigaPlatser);
     }
 
     static void SeObokadePlatser() {
