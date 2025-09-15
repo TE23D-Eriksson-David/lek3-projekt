@@ -1,5 +1,7 @@
 import java.util.Scanner;
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.sql.Array;
 import java.time.LocalDate;
 
 public class App {
@@ -37,11 +39,11 @@ public class App {
                     SeVinsten(pernsonumerPlatser);
                     break;
                 case 6:
-                    SeSorteradBokning(pernsonumerPlatser,NamnPlatser);
+                    SeSorteradBokning(pernsonumerPlatser, NamnPlatser);
                     break;
                 case 7:
                     AvslutaBokning(TB);
-                break;
+                    break;
             }
 
         }
@@ -402,10 +404,33 @@ public class App {
         System.out.println("Intäkterna blev " + Summa + "kr.");
     }
 
-    static void SeSorteradBokning(long[] pernsonumerPlatser, String[] NamnPlatser) {
+    static void SeSorteradBokning(Long[] pernsonumerPlatser, String[] NamnPlatser) {
+        int[] platser = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+        Long[] tempPPlatser = Arrays.copyOf(pernsonumerPlatser, pernsonumerPlatser.length);
+        boolean Klar = false;
         do {
-            
-        } while (true);
+            Klar = true;
+            for (int i = 0; i < tempPPlatser.length - 1; i++) {
+                long tal1 = tempPPlatser[i] / 1000;
+                long tal2 = tempPPlatser[i + 1] / 1000;
+                if (tal1 < tal2) {
+                    int Itemp = platser[i];
+                    long temp = tempPPlatser[i];
+                    platser[i] = platser[i + 1];
+                    platser[i] = Itemp;
+                    tempPPlatser[i] = tempPPlatser[i + 1];
+                    tempPPlatser[i] = temp;
+                    Klar = false;
+                }
+            }
+        } while (Klar);
+
+        for (int i = 0; i < tempPPlatser.length; i++) {
+            if (NamnPlatser[i] != null) { // Mardörm, horibelt hemskt, kanshe nödigt konpliserat.
+                System.out.println(
+                        "" + NamnPlatser[i] + " " + tempPPlatser[platser[i]] + " plats numer " + platser[i] + "");
+            }
+        }
 
     }
 
