@@ -31,14 +31,17 @@ public class App {
                     SeBokning(TB, NamnPlatser, pernsonumerPlatser);
                     break;
                 case 4:
-                    TaBortBokning();
+                    TaBortBokning(TB, NamnPlatser, pernsonumerPlatser);
                     break;
                 case 5:
-                    SeVinsten();
+                    SeVinsten(pernsonumerPlatser);
                     break;
                 case 6:
-                    AvslutaBokning(TB);
+                    SeSorteradBokning(pernsonumerPlatser,NamnPlatser);
                     break;
+                case 7:
+                    AvslutaBokning(TB);
+                break;
             }
 
         }
@@ -225,7 +228,7 @@ public class App {
 
     static void SeBokning(Scanner TB, String[] NamnPlatser, Long[] pernsonumerPlatser) {
         boolean Klar = false;
-        long Pnumer;
+        long Pnumer = 0;
         String PnumerString;
         String Input;
         String FormateratInput;
@@ -238,52 +241,171 @@ public class App {
             System.out.print("Ange fult namn:");
             Input = TB.nextLine().toLowerCase();
             FormateratInput = Input.replaceAll("[0123456789!@£$¤%&/{()=^¨~*'-_.:,;`+#?]", "");
-        
-        for (String namn : NamnPlatser) {
-            if (namn == FormateratInput) {
-                System.out.println();
-                break;
-            }
-        }
 
-        System.out.println("Det verkar inte finas någon bokning med det namnet!");
+            for (int i = 0; i < NamnPlatser.length; i++) {
+                if (NamnPlatser[i] == FormateratInput) {
+                    Klar = true;
+                    System.out.println();
+                    System.out.println("Du har bokat plats numer " + i + "");
+                    if (i % 2 == 0 && i % 4 != 0 || (i - 1) % 2 == 0 && i % 4 != 0) {
+                        System.out.println("Det är en mitt plats");
+                    } else {
+                        System.out.println("Det är en fönsterplats");
+                    }
+                    break;
+                }
+            }
+
+            if (Klar == false) {
+                System.out.println("Det verkar inte finas någon bokning med det namnet!");
+            }
 
         } else {
-            System.out.print("Ange personumer:");
+            System.out.print("Ange ditt personumer:");
             while (Klar == false) {
-            try {
-                Pnumer = TB.nextLong();
-                Klar = true;
-                PnumerString = Long.toString(Pnumer);
-                System.out.println(PnumerString); // TA bortt
+                try {
+                    Pnumer = TB.nextLong();
+                    Klar = true;
+                    PnumerString = Long.toString(Pnumer);
+                    System.out.println(PnumerString); // TA bortt
 
-                if (PnumerString.length() != 12) {
+                    if (PnumerString.length() != 12) {
+                        Klar = false;
+                        System.out.println("Ditt personumer kan bara vara 12 sifror");
+                        System.out.println("Ange ditt personumer:");
+                    }
+
+                } catch (InputMismatchException e) {
+                    System.out.println("Skriv bara in sifror!");
+                    System.out.print("Ange ditt personumer: ");
                     Klar = false;
-                    System.out.println("Ditt personumer kan bara vara 12 sifror");
-                    System.out.println("Ange personumer:");
+                    if (TB.hasNext())
+                        TB.next();
                 }
+            }
 
-            } catch (InputMismatchException e) {
-                System.out.println("Skriv bara in sifror!");
-                System.out.print("Ange personumer: ");
-                Klar = false;
-                if (TB.hasNext())
-                    TB.next();
+            Klar = false;
+            for (int i = 0; i < pernsonumerPlatser.length; i++) {
+                if (pernsonumerPlatser[i] == Pnumer) {
+                    Klar = true;
+                    System.out.println("Du har bokat plats numer " + i + "");
+                    if (i % 2 == 0 && i % 4 != 0 || (i - 1) % 2 == 0 && i % 4 != 0) {
+                        System.out.println("Det är en mitt plats");
+                    } else {
+                        System.out.println("Det är en fönsterplats");
+                    }
+                    break;
+                }
+            }
+
+            if (Klar == false)
+                System.out.println("Det verkar inte finas någon bokning med det personumret!");
+
+        }
+
+    }
+
+    static void TaBortBokning(Scanner TB, String[] NamnPlatser, Long[] pernsonumerPlatser) {
+        boolean Klar = false;
+        long Pnumer = 0;
+        String PnumerString;
+        String Input;
+        String FormateratInput;
+
+        System.out.println("För att ta bort din bokning måste du antingen ange namnet för platsen eller personumeret.");
+        System.out.println("1. Namn\n2. Personumer");
+        int Val = VALMETOD(false, 0, TB, 1, 2);
+
+        if (Val == 1) {
+            System.out.print("Ange fult namn:");
+            Input = TB.nextLine().toLowerCase();
+            FormateratInput = Input.replaceAll("[0123456789!@£$¤%&/{()=^¨~*'-_.:,;`+#?]", "");
+
+            for (int i = 0; i < NamnPlatser.length; i++) {
+                if (NamnPlatser[i] == FormateratInput) {
+                    Klar = true;
+                    NamnPlatser[i] = null;
+                    pernsonumerPlatser[i] = 0l;
+                    System.out.println("Din bokning är nu bort tagen.");
+                    break;
+                }
+            }
+
+            if (Klar == false) {
+                System.out.println("Det verkar inte finas någon bokning med det namnet!");
+            }
+
+        } else {
+            System.out.print("Ange ditt personumer:");
+            while (Klar == false) {
+                try {
+                    Pnumer = TB.nextLong();
+                    Klar = true;
+                    PnumerString = Long.toString(Pnumer);
+                    System.out.println(PnumerString); // TA bortt
+
+                    if (PnumerString.length() != 12) {
+                        Klar = false;
+                        System.out.println("Ditt personumer kan bara vara 12 sifror");
+                        System.out.println("Ange ditt personumer:");
+                    }
+
+                } catch (InputMismatchException e) {
+                    System.out.println("Skriv bara in sifror!");
+                    System.out.print("Ange ditt personumer: ");
+                    Klar = false;
+                    if (TB.hasNext())
+                        TB.next();
+                }
+            }
+
+            Klar = false;
+            for (int i = 0; i < pernsonumerPlatser.length; i++) {
+                if (pernsonumerPlatser[i] == Pnumer) {
+                    Klar = true;
+                    pernsonumerPlatser[i] = 0l;
+                    NamnPlatser[i] = null;
+                    System.out.println("Din bokning är nu bort tagen.");
+                    break;
+                }
+            }
+
+            if (Klar == false)
+                System.out.println("Det verkar inte finas någon bokning med det personumret!");
+
+        }
+
+    }
+
+    static void SeVinsten(Long[] personumerPlatser) {
+        double Summa = 0;
+        LocalDate idag = LocalDate.now();
+        String idagStr = idag.toString();
+        idagStr = idagStr.replaceAll("-", "");
+
+        for (int i = 0; i < personumerPlatser.length; i++) {
+            if (personumerPlatser[i] != 0) {
+                Long Pnumer = personumerPlatser[i];
+                String PnumerString = Pnumer.toString();
+
+                String Födelseår = PnumerString.substring(0, 9);
+                int FödelseårInt = Integer.parseInt(Födelseår);
+                int idagStrInt = Integer.parseInt(idagStr);
+                if (idagStrInt - FödelseårInt > 18) {
+                    Summa = +299.90;
+                } else {
+                    Summa = +149.90;
+                }
             }
         }
-        }
-       
+
+        System.out.println("Intäkterna blev " + Summa + "kr.");
     }
 
-    static void TaBortBokning() {
-
-    }
-
-    static void SeVinsten() {
-
-    }
-
-    static void SeSorteradBokning() {
+    static void SeSorteradBokning(long[] pernsonumerPlatser, String[] NamnPlatser) {
+        do {
+            
+        } while (true);
 
     }
 
@@ -332,23 +454,10 @@ public class App {
         }
         System.out.println(Klar);
         PN[Val] = Pnumer;
-
-        // LocalDate idag = LocalDate.now();
-        // String idagStr = idag.toString();
-        // idagStr = idagStr.replaceAll("-", "");
-        // System.out.println(idagStr);
-        // String Födelseår = PnumerString.substring(0, 9);
-        // int FödelseårInt = Integer.parseInt(Födelseår);
-        // int idagStrInt = Integer.parseInt(idagStr);
-        // if (idagStrInt - FödelseårInt > 18) {
-        // System.out.println(); // Vuxen!!
-        // }
-
         Klar = false;
     }
 
     static int VALMETOD(boolean Klar, int Val, Scanner TB, int Minstval, int Störstval) {
-
         Klar = false;
         Val = 0;
         while (Klar == false) {
@@ -368,6 +477,7 @@ public class App {
                     TB.next();
             }
         }
+        Klar = false;
         return Val;
     }
 
