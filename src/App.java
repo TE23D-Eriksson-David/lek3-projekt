@@ -1,23 +1,26 @@
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.sql.Array;
 import java.time.LocalDate;
 
 public class App {
     public static void main(String[] args) throws Exception {
         int Val = 0;
         boolean Klar = false;
-        int[] bussPlatser = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        Long[] pernsonumerPlatser = { 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l };
-        String[] NamnPlatser = { null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+        int[] bussPlatser = { 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 };
+        Long[] pernsonumerPlatser = { 0l, 0l, 199811213456l, 0l, 197806143456l, 200509303456l, 0l, 0l, 0l, 0l, 0l, 0l,
+                0l, 200102243456l, 0l, 0l, 0l, 0l, 0l, 0l };
+        String[] NamnPlatser = { null, null, "herman alström", null, "chia eriksson", "n", null, null, null, null, null,
+                null, null, "kristofer trekofs",
                 null, null, null, null, null, null };
         Scanner TB = new Scanner(System.in);
 
         while (true) {
             Val = 0;
+            System.out.println("");
+            System.out.println("Skriv sifran som korisponderar till alternativet.");
             System.out.println(
-                    "1. Boka en plats.\n2. Se obokade platser.\n3. Se Bokning\n4. Ta bort bokning\n5. Se vinsten av bokade platser.\n6. Avsluta bokningen");
+                    "1. Boka en plats.\n2. Se obokade platser.\n3. Se Bokning\n4. Ta bort bokning.\n5. Se vinsten av bokade platser.\n6. Se sorterad bokning.\n7. Avsluta bokningen");
             System.out.print("Ange: ");
 
             Val = VALMETOD(Klar, Val, TB, 1, 6);
@@ -53,7 +56,7 @@ public class App {
     static void BokaPlats(int[] bussPlatser, Long[] pernsonumerPlatser, String[] NamnPlatser, Boolean Klar, int Val,
             Scanner TB) {
         int AntalLedigaPlatser = 0;
-        for (int i = 0; i < bussPlatser.length; i++) {
+        for (int i = 0; i < bussPlatser.length - 1; i++) {
             if (bussPlatser[i] == 0) {
                 AntalLedigaPlatser++;
             }
@@ -106,9 +109,6 @@ public class App {
                     try {
                         Val = TB.nextInt();
                         Klar = true;
-
-                        System.out.println(Val % 4);
-                        System.out.println((Val - 1) % 4); // Ska tass bort !!
                         if (Val % 4 != 0 && (Val - 1) % 4 != 0 || bussPlatser[Val - 1] != 0) {
                             Klar = false;
                             System.out.println("Ange en sifra som korispoderar till en av platserna!");
@@ -203,9 +203,9 @@ public class App {
 
             if (x == 2) {
                 if (bussPlatser[i] == 0) {
-                    System.out.println("|" + y + "| :Ledig: ");
+                    System.out.print("|" + y + "| :Ledig: ");
                 } else {
-                    System.out.println("|" + y + "|   :X:  ");
+                    System.out.print("|" + y + "|   :X:  ");
                 }
             }
 
@@ -239,19 +239,28 @@ public class App {
         System.out.println("1. Namn\n2. Personumer");
         int Val = VALMETOD(false, 0, TB, 1, 2);
 
+        // if (TB.hasNextLine()) {
+        //     TB.next();
+        // }
+
         if (Val == 1) {
-            System.out.print("Ange fult namn:");
-            Input = TB.nextLine().toLowerCase();
+            System.out.print("Ange fult namn: ");
+            Input = TB.nextLine();
+            System.out.println(Input);
             FormateratInput = Input.replaceAll("[0123456789!@£$¤%&/{()=^¨~*'-_.:,;`+#?]", "");
+            FormateratInput = "n";
 
             for (int i = 0; i < NamnPlatser.length; i++) {
                 if (NamnPlatser[i] == FormateratInput) {
                     Klar = true;
                     System.out.println();
-                    System.out.println("Du har bokat plats numer " + i + "");
                     if (i % 2 == 0 && i % 4 != 0 || (i - 1) % 2 == 0 && i % 4 != 0) {
+                        i++;
+                        System.out.println("Du har bokat plats numer " + i + "");
                         System.out.println("Det är en mitt plats");
                     } else {
+                        i++;
+                        System.out.println("Du har bokat plats numer " + i + "");
                         System.out.println("Det är en fönsterplats");
                     }
                     break;
@@ -290,7 +299,7 @@ public class App {
             for (int i = 0; i < pernsonumerPlatser.length; i++) {
                 if (pernsonumerPlatser[i] == Pnumer) {
                     Klar = true;
-                    System.out.println("Du har bokat plats numer " + i + "");
+                    System.out.println("Du har bokat plats numer " + i + 1 + "");
                     if (i % 2 == 0 && i % 4 != 0 || (i - 1) % 2 == 0 && i % 4 != 0) {
                         System.out.println("Det är en mitt plats");
                     } else {
@@ -452,7 +461,6 @@ public class App {
 
         Namn = TB.nextLine().toLowerCase();
         FormateratNamn = Namn.replaceAll("[0123456789!@£$¤%&/{()=^¨~*'-_.:,;`+#?]", "");
-        System.out.println(FormateratNamn);
         NP[Val] = FormateratNamn;
 
         System.out.print("Ange personumer:");
@@ -461,7 +469,6 @@ public class App {
                 Pnumer = TB.nextLong();
                 Klar = true;
                 PnumerString = Long.toString(Pnumer);
-                System.out.println(PnumerString); // TA bortt
 
                 if (PnumerString.length() != 12) {
                     Klar = false;
@@ -477,9 +484,7 @@ public class App {
                     TB.next();
             }
         }
-        System.out.println(Klar);
         PN[Val] = Pnumer;
-        Klar = false;
     }
 
     static int VALMETOD(boolean Klar, int Val, Scanner TB, int Minstval, int Störstval) {
