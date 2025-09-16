@@ -8,11 +8,10 @@ public class App {
         int Val = 0;
         boolean Klar = false;
         int[] bussPlatser = { 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 };
-        Long[] pernsonumerPlatser = { 0l, 0l, 199811213456l, 0l, 197806143456l, 200509303456l, 0l, 0l, 0l, 0l, 0l, 0l,
+        Long[] pernsonumerPlatser = { 0l, 0l, 199811213456l, 0l, 197806143456l, 200809303456l, 0l, 0l, 0l, 0l, 0l, 0l,
                 0l, 200102243456l, 0l, 0l, 0l, 0l, 0l, 0l };
-        String[] NamnPlatser = { null, null, "herman alström", null, "chia eriksson", "n", null, null, null, null, null,
-                null, null, "kristofer trekofs",
-                null, null, null, null, null, null };
+        String[] NamnPlatser = { "", "", "herman alström", "", "chia eriksson", "n", "", "", "", "", "",
+                "", "", "kristofer trekofs", "", "", "", "", "", "" };
         Scanner TB = new Scanner(System.in);
 
         while (true) {
@@ -23,7 +22,7 @@ public class App {
                     "1. Boka en plats.\n2. Se obokade platser.\n3. Se Bokning\n4. Ta bort bokning.\n5. Se vinsten av bokade platser.\n6. Se sorterad bokning.\n7. Avsluta bokningen");
             System.out.print("Ange: ");
 
-            Val = VALMETOD(Klar, Val, TB, 1, 6);
+            Val = VALMETOD(Klar, Val, TB, 1, 7);
 
             switch (Val) {
                 case 1:
@@ -36,7 +35,7 @@ public class App {
                     SeBokning(TB, NamnPlatser, pernsonumerPlatser);
                     break;
                 case 4:
-                    TaBortBokning(TB, NamnPlatser, pernsonumerPlatser);
+                    TaBortBokning(TB, NamnPlatser, pernsonumerPlatser, bussPlatser);
                     break;
                 case 5:
                     SeVinsten(pernsonumerPlatser);
@@ -232,26 +231,28 @@ public class App {
         boolean Klar = false;
         long Pnumer = 0;
         String PnumerString;
-        String Input;
+        String Input = "";
         String FormateratInput;
 
         System.out.println("För att se din plats måste du ange antingen dit fulla namn eller personumeret.");
         System.out.println("1. Namn\n2. Personumer");
         int Val = VALMETOD(false, 0, TB, 1, 2);
 
-        // if (TB.hasNextLine()) {
-        //     TB.next();
-        // }
+        if (TB.hasNextLine()) {
+            TB.nextLine();
+        }
 
         if (Val == 1) {
-            System.out.print("Ange fult namn: ");
+            System.out.print("Ange fullt namn: ");
             Input = TB.nextLine();
             System.out.println(Input);
+
             FormateratInput = Input.replaceAll("[0123456789!@£$¤%&/{()=^¨~*'-_.:,;`+#?]", "");
-            FormateratInput = "n";
+            System.out.println(FormateratInput);
 
             for (int i = 0; i < NamnPlatser.length; i++) {
-                if (NamnPlatser[i] == FormateratInput) {
+                System.out.println(NamnPlatser[i]);
+                if (NamnPlatser[i].equals(FormateratInput)) {
                     Klar = true;
                     System.out.println();
                     if (i % 2 == 0 && i % 4 != 0 || (i - 1) % 2 == 0 && i % 4 != 0) {
@@ -316,7 +317,7 @@ public class App {
 
     }
 
-    static void TaBortBokning(Scanner TB, String[] NamnPlatser, Long[] pernsonumerPlatser) {
+    static void TaBortBokning(Scanner TB, String[] NamnPlatser, Long[] pernsonumerPlatser, int[] bussPlatser) {
         boolean Klar = false;
         long Pnumer = 0;
         String PnumerString;
@@ -327,16 +328,21 @@ public class App {
         System.out.println("1. Namn\n2. Personumer");
         int Val = VALMETOD(false, 0, TB, 1, 2);
 
+        if (TB.hasNextLine()) {
+            TB.nextLine();
+        }
+
         if (Val == 1) {
             System.out.print("Ange fult namn:");
             Input = TB.nextLine().toLowerCase();
             FormateratInput = Input.replaceAll("[0123456789!@£$¤%&/{()=^¨~*'-_.:,;`+#?]", "");
 
             for (int i = 0; i < NamnPlatser.length; i++) {
-                if (NamnPlatser[i] == FormateratInput) {
+                if (NamnPlatser[i].equals(FormateratInput)) {
                     Klar = true;
-                    NamnPlatser[i] = null;
+                    NamnPlatser[i] = "0";
                     pernsonumerPlatser[i] = 0l;
+                    bussPlatser[i] = 0;
                     System.out.println("Din bokning är nu bort tagen.");
                     break;
                 }
@@ -375,7 +381,7 @@ public class App {
                 if (pernsonumerPlatser[i] == Pnumer) {
                     Klar = true;
                     pernsonumerPlatser[i] = 0l;
-                    NamnPlatser[i] = null;
+                    NamnPlatser[i] = "0";
                     System.out.println("Din bokning är nu bort tagen.");
                     break;
                 }
@@ -394,18 +400,25 @@ public class App {
         String idagStr = idag.toString();
         idagStr = idagStr.replaceAll("-", "");
 
-        for (int i = 0; i < personumerPlatser.length; i++) {
+        for (int i = 0; i < personumerPlatser.length - 1; i++) {
             if (personumerPlatser[i] != 0) {
                 Long Pnumer = personumerPlatser[i];
+                System.out.println(Pnumer);
                 String PnumerString = Pnumer.toString();
 
-                String Födelseår = PnumerString.substring(0, 9);
+                String Födelseår = PnumerString.substring(0, 8);
+                System.out.println(Födelseår);
                 int FödelseårInt = Integer.parseInt(Födelseår);
                 int idagStrInt = Integer.parseInt(idagStr);
-                if (idagStrInt - FödelseårInt > 18) {
-                    Summa = +299.90;
+                System.out.println(FödelseårInt);
+                System.out.println(idagStrInt);
+                System.out.println(idagStrInt - FödelseårInt);
+                if (idagStrInt - FödelseårInt > 180000) {
+                    Summa = Summa + 299.90;
+                    System.out.println("v");
                 } else {
-                    Summa = +149.90;
+                    System.out.println("b");
+                    Summa = Summa + 149.90;
                 }
             }
         }
@@ -414,15 +427,16 @@ public class App {
     }
 
     static void SeSorteradBokning(Long[] pernsonumerPlatser, String[] NamnPlatser) {
-        int[] platser = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+        int[] platser = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
         Long[] tempPPlatser = Arrays.copyOf(pernsonumerPlatser, pernsonumerPlatser.length);
         boolean Klar = false;
         do {
             Klar = true;
-            for (int i = 0; i < tempPPlatser.length - 1; i++) {
+            for (int i = 0; i < tempPPlatser.length-1; i++) {
                 long tal1 = tempPPlatser[i] / 1000;
                 long tal2 = tempPPlatser[i + 1] / 1000;
                 if (tal1 < tal2) {
+
                     int Itemp = platser[i];
                     long temp = tempPPlatser[i];
                     platser[i] = platser[i + 1];
@@ -432,14 +446,15 @@ public class App {
                     Klar = false;
                 }
             }
+
         } while (Klar);
 
         for (int i = 0; i < tempPPlatser.length; i++) {
-            if (NamnPlatser[i] != null) { // Mardörm, horibelt hemskt, kanshe nödigt konpliserat.
+            if (!NamnPlatser[i].equals("")) { // Mardörm, horibelt hemskt, kanshe nödigt konpliserat.
                 System.out.println(
                         "" + NamnPlatser[i] + " " + tempPPlatser[platser[i]] + " plats numer " + platser[i] + "");
-            }
-        }
+            } 
+        }   
 
     }
 
