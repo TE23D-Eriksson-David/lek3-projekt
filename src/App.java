@@ -435,7 +435,7 @@ public class App {
         int iteration;
         boolean Exeption = false;
         do {
-            Klar = true;
+            Klar = false;
             Exeption = false;
             for (int i = 0; i < tempPPlatser.length - 1; i++) {
 
@@ -459,14 +459,14 @@ public class App {
 
                     // System.out.println(tal1);
                     if (Exeption != true) {
-                        if (tal1 < tal2) {
+                        if (tal1 > tal2) {
                             int Itemp = platser[i];
                             long temp = tempPPlatser[i];
                             platser[i] = platser[i + iteration];
                             platser[i + iteration] = Itemp;
                             tempPPlatser[i] = tempPPlatser[i + iteration];
                             tempPPlatser[i + iteration] = temp;
-                            Klar = false;
+                            Klar = true;
                             System.out.println("iteration");
                         }
                     }
@@ -476,10 +476,9 @@ public class App {
         } while (Klar);
 
         for (int i = 0; i < tempPPlatser.length; i++) {
-            if (!NamnPlatser[i].equals("")) { // Mardörm, horibelt hemskt, kanshe nödigt konpliserat.
-            //     System.out.println(
-            //             "" + NamnPlatser[i] + " " + tempPPlatser[platser[i]] + " plats numer " + platser[i] + "");
-           System.out.println(tempPPlatser[i]);
+            if (!NamnPlatser[i].equals("")) {// Mardörm, horibelt hemskt, kanshe nödigt konpliserat.
+        System.out.println(
+        "" + NamnPlatser[i] + " " + tempPPlatser[i] + " plats numer " + platser[i] + "");
         }
         }
 
