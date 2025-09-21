@@ -7,11 +7,11 @@ public class App {
     public static void main(String[] args) throws Exception {
         int Val = 0;
         boolean Klar = false;
-        int[] bussPlatser = { 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 };
-        Long[] pernsonumerPlatser = { 0l, 0l, 199811213456l, 0l, 197806143456l, 200809303456l, 0l, 0l, 0l, 0l, 0l, 0l,
-                0l, 200102243456l, 0l, 0l, 0l, 0l, 0l, 0l };
-        String[] NamnPlatser = { "", "", "herman alström", "", "chia eriksson", "n", "", "", "", "", "",
-                "", "", "kristofer trekofs", "", "", "", "", "", "" };
+        int[] bussPlatser = { 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0 };
+        Long[] pernsonumerPlatser = { 200509081234l, 199605061234l, 199811213456l, 202411011234l, 197806143456l, 200809303456l, 0l, 0l, 0l, 0l, 0l, 0l,
+                0l, 200102243456l, 0l, 200003091234l, 0l, 0l, 0l, 0l };
+        String[] NamnPlatser = { "a", "b", "c", "d", "e", "f", "", "", "", "", "",
+                "", "", "g", "", "h", "", "", "", "" };
         Scanner TB = new Scanner(System.in);
 
         while (true) {
@@ -430,20 +430,46 @@ public class App {
         int[] platser = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
         Long[] tempPPlatser = Arrays.copyOf(pernsonumerPlatser, pernsonumerPlatser.length);
         boolean Klar = false;
+        long tal1;
+        long tal2 = 0;
+        int iteration;
+        boolean Exeption = false;
         do {
             Klar = true;
-            for (int i = 0; i < tempPPlatser.length-1; i++) {
-                long tal1 = tempPPlatser[i] / 1000;
-                long tal2 = tempPPlatser[i + 1] / 1000;
-                if (tal1 < tal2) {
+            Exeption = false;
+            for (int i = 0; i < tempPPlatser.length - 1; i++) {
 
-                    int Itemp = platser[i];
-                    long temp = tempPPlatser[i];
-                    platser[i] = platser[i + 1];
-                    platser[i] = Itemp;
-                    tempPPlatser[i] = tempPPlatser[i + 1];
-                    tempPPlatser[i] = temp;
-                    Klar = false;
+                if (tempPPlatser[i] != 0l) {
+                    tal1 = tempPPlatser[i] / 1000;
+                    iteration = 0;
+
+                    do {
+                        iteration++;
+                        if (iteration + i == tempPPlatser.length) {
+                            Exeption = true;
+                            iteration--;
+                            System.out.println("max");
+                        } else {
+                            tal2 = tempPPlatser[i + iteration] / 1000;
+                            System.out.println(tempPPlatser[i + iteration]);
+                        }
+
+                    } while (tempPPlatser[i + iteration] == 0l && Exeption == false);
+                    System.out.println("igenom");
+
+                    // System.out.println(tal1);
+                    if (Exeption != true) {
+                        if (tal1 < tal2) {
+                            int Itemp = platser[i];
+                            long temp = tempPPlatser[i];
+                            platser[i] = platser[i + iteration];
+                            platser[i + iteration] = Itemp;
+                            tempPPlatser[i] = tempPPlatser[i + iteration];
+                            tempPPlatser[i + iteration] = temp;
+                            Klar = false;
+                            System.out.println("iteration");
+                        }
+                    }
                 }
             }
 
@@ -451,10 +477,11 @@ public class App {
 
         for (int i = 0; i < tempPPlatser.length; i++) {
             if (!NamnPlatser[i].equals("")) { // Mardörm, horibelt hemskt, kanshe nödigt konpliserat.
-                System.out.println(
-                        "" + NamnPlatser[i] + " " + tempPPlatser[platser[i]] + " plats numer " + platser[i] + "");
-            } 
-        }   
+            //     System.out.println(
+            //             "" + NamnPlatser[i] + " " + tempPPlatser[platser[i]] + " plats numer " + platser[i] + "");
+           System.out.println(tempPPlatser[i]);
+        }
+        }
 
     }
 
