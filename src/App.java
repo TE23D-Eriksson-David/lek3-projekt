@@ -53,6 +53,8 @@ public class App {
 
     }
 
+
+
     static void BokaPlats(int[] bussPlatser, Long[] pernsonumerPlatser, String[] namnPlatser, Boolean klar, int val,
             Scanner TB) {
         int antalLedigaPlatser = 0;
@@ -473,7 +475,7 @@ public class App {
     }
 
     static void AngeInformation(int val, String[] namnPlatser, Long[] personNumerPlatser) {
-        Scanner TB = new Scanner(System.in);
+        Scanner TB = new Scanner(System.in); // den behöver vara så här!! 
         boolean klar = false;
         long personNumer = 1;
         String personNumerSträng = "";
