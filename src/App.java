@@ -8,7 +8,8 @@ public class App {
         int val = 0;
         boolean klar = false;
         int[] bussPlatser = { 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0 };
-        Long[] pernsonumerPlatser = { 200509081234l, 199605061234l, 199811213456l, 202411011234l, 197806143456l, 200809303456l, 0l, 0l, 0l, 0l, 0l, 0l,
+        Long[] pernsonumerPlatser = { 200509081234l, 199605061234l, 199811213456l, 202411011234l, 197806143456l,
+                200809303456l, 0l, 0l, 0l, 0l, 0l, 0l,
                 0l, 200102243456l, 0l, 200003091234l, 0l, 0l, 0l, 0l };
         String[] namnPlatser = { "a", "b", "c", "d", "e", "f", "", "", "", "", "",
                 "", "", "g", "", "h", "", "", "", "" };
@@ -244,7 +245,7 @@ public class App {
 
         if (val == 1) {
             System.out.print("Ange fullt namn: ");
-            inmatning = TB.nextLine();
+            inmatning = TB.nextLine().toLowerCase();
             formateratSvar = inmatning.replaceAll("[0123456789!@£$¤%&/{()=^¨~*'-_.:,;`+#?]", "");
 
             for (int i = 0; i < namnPlatser.length; i++) {
@@ -295,7 +296,7 @@ public class App {
             for (int i = 0; i < pernsonumerPlatser.length; i++) {
                 if (pernsonumerPlatser[i] == personNumer) {
                     klar = true;
-                    System.out.println("Du har bokat plats numer " + i + 1 + "");
+                    System.out.println("Du har bokat plats numer " + (i + 1) + "");
                     if (i % 2 == 0 && i % 4 != 0 || (i - 1) % 2 == 0 && i % 4 != 0) {
                         System.out.println("Det är en mitt plats");
                     } else {
@@ -403,7 +404,7 @@ public class App {
                 int födelseÅrInt = Integer.parseInt(födelseÅr);
                 int idagStrInt = Integer.parseInt(dagensDatumSträng);
                 if (idagStrInt - födelseÅrInt > 180000) {
-                    summa = summa + 299.90;       
+                    summa = summa + 299.90;
                 } else {
                     summa = summa + 149.90;
                 }
@@ -459,9 +460,9 @@ public class App {
 
         for (int i = 0; i < temporäraPersonPlatser.length; i++) {
             if (!namnPlatser[i].equals("")) {// Mardörm, horibelt hemskt, kanshe nödigt konpliserat.
-        System.out.println(
-        "" + namnPlatser[i] + " " + temporäraPersonPlatser[i] + " plats numer " + platser[i] + "");
-        }
+                System.out.println(
+                        "" + namnPlatser[i] + " " + temporäraPersonPlatser[i] + " plats numer " + platser[i] + "");
+            }
         }
 
     }
